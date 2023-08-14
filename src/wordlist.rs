@@ -1,5 +1,5 @@
 // wordlist from https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
-pub const EFF_LW: [&str; 7776] = [
+pub const EFF_LARGE_WORDLIST: [&str; 7776] = [
     "abacus",
     "abdomen",
     "abdominal",

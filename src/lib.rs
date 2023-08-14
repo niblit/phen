@@ -70,7 +70,7 @@ usage: {name} [passphrase length] [passphrase count]"
         loop {
             if remaining == 0 {
                 break;
-            } else if remaining <= constants::MAX_PADDING_LENGTH {
+            } else if remaining <= constants::MAXIMUM_PADDING_LENGTH {
                 words.push(self.get_padding(remaining));
                 break;
             }
@@ -91,7 +91,8 @@ usage: {name} [passphrase length] [passphrase count]"
         words.join(&separator)
     }
     fn get_word(&self) -> String {
-        wordlist::EFF_LW[get_random_number(wordlist::EFF_LW.len())].to_string()
+        wordlist::EFF_LARGE_WORDLIST[get_random_number(wordlist::EFF_LARGE_WORDLIST.len())]
+            .to_string()
     }
     fn get_padding(&self, n: usize) -> String {
         let mut padding = Vec::new();
