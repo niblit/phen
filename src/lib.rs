@@ -1,5 +1,6 @@
 mod constants;
 mod csrng;
+mod defaults;
 mod wordlist;
 
 pub struct Phen {
@@ -27,19 +28,19 @@ usage: {name} [passphrase length] [passphrase count]"
         }
 
         let length: usize = if let Some(s) = args.get(1) {
-            let mut s = s.parse().unwrap_or(constants::DEFAULT_PASSPHRASE_LENGTH);
+            let mut s = s.parse().unwrap_or(defaults::PASSPHRASE_LENGTH);
             if s == 0 {
-                s = constants::DEFAULT_PASSPHRASE_LENGTH;
+                s = defaults::PASSPHRASE_LENGTH;
             }
             s
         } else {
-            constants::DEFAULT_PASSPHRASE_LENGTH
+            defaults::PASSPHRASE_LENGTH
         };
 
         let count: usize = if let Some(s) = args.get(2) {
-            s.parse().unwrap_or(constants::DEFAULT_PASSPHRASE_LENGTH)
+            s.parse().unwrap_or(defaults::PASSPHRASE_COUNT)
         } else {
-            constants::DEFAULT_PASSPHRASE_COUNT
+            defaults::PASSPHRASE_COUNT
         };
 
         Ok(Phen {
