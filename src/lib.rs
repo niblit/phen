@@ -1,4 +1,5 @@
 mod constants;
+mod wordlist;
 
 // avoid modulo bias
 fn get_random_number(below_value: usize) -> usize {
@@ -90,7 +91,7 @@ usage: {name} [passphrase length] [passphrase count]"
         words.join(&separator)
     }
     fn get_word(&self) -> String {
-        constants::EFF_LW[get_random_number(constants::EFF_LW.len())].to_string()
+        wordlist::EFF_LW[get_random_number(wordlist::EFF_LW.len())].to_string()
     }
     fn get_padding(&self, n: usize) -> String {
         let mut padding = Vec::new();
