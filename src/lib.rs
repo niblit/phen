@@ -80,9 +80,16 @@ usage: {name} [passphrase length] [passphrase count]"
             }
         }
 
-        let word_to_capitalize = self.generator.random(words.len());
+        // Capitalization
 
-        words[word_to_capitalize] = words[word_to_capitalize].to_ascii_uppercase();
+        // Get indexes
+        let word_index = self.generator.random(words.len());
+        let char_index = self.generator.random(words[word_index].len());
+
+        // Change the char to uppercase
+        let mut chars_in_word: Vec<char> = words[word_index].clone().chars().collect();
+        chars_in_word[char_index] = chars_in_word[char_index].to_ascii_uppercase();
+        words[word_index] = chars_in_word.into_iter().collect();
 
         words.join(&separator)
     }
