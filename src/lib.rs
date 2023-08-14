@@ -80,9 +80,9 @@ usage: {name} [passphrase length] [passphrase count]"
             }
         }
 
-        let to_capitalize = self.generator.random(words.len());
+        let word_to_capitalize = self.generator.random(words.len());
 
-        words[to_capitalize] = words[to_capitalize].to_ascii_uppercase();
+        words[word_to_capitalize] = words[word_to_capitalize].to_ascii_uppercase();
 
         words.join(&separator)
     }
