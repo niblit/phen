@@ -1,20 +1,11 @@
 mod constants;
+mod csrng;
 mod wordlist;
-
-// avoid modulo bias
-fn get_random_number(below_value: usize) -> usize {
-    assert!(below_value > 0);
-    loop {
-        let number = rand::random::<usize>();
-        if number < (usize::MAX - usize::MAX % below_value) {
-            return number % below_value;
-        }
-    }
-}
 
 pub struct Phen {
     length: usize,
     count: usize,
+    generator: csrng::Csrng,
 }
 
 impl Phen {
@@ -51,19 +42,23 @@ usage: {name} [passphrase length] [passphrase count]"
             constants::DEFAULT_PASSPHRASE_COUNT
         };
 
-        Ok(Phen { length, count })
+        Ok(Phen {
+            length,
+            count,
+            generator: csrng::Csrng::new(),
+        })
     }
 
-    pub fn run(&self) {
+    pub fn run(&mut self) {
         for _ in 0..self.count {
             let passphrase = self.get_passphrase(self.length);
             println!("{passphrase}");
         }
     }
 
-    pub fn get_passphrase(&self, length: usize) -> String {
+    pub fn get_passphrase(&mut self, length: usize) -> String {
         let separator =
-            constants::SEPARATORS[get_random_number(constants::SEPARATORS.len())].to_string();
+            constants::SEPARATORS[self.generator.random(constants::SEPARATORS.len())].to_string();
         let mut words: Vec<String> = Vec::new();
 
         let mut remaining = length;
@@ -84,21 +79,22 @@ usage: {name} [passphrase length] [passphrase count]"
             }
         }
 
-        let to_capitalize = get_random_number(words.len());
+        let to_capitalize = self.generator.random(words.len());
 
         words[to_capitalize] = words[to_capitalize].to_ascii_uppercase();
 
         words.join(&separator)
     }
-    fn get_word(&self) -> String {
-        wordlist::EFF_LARGE_WORDLIST[get_random_number(wordlist::EFF_LARGE_WORDLIST.len())]
+    fn get_word(&mut self) -> String {
+        wordlist::EFF_LARGE_WORDLIST[self.generator.random(wordlist::EFF_LARGE_WORDLIST.len())]
             .to_string()
     }
-    fn get_padding(&self, n: usize) -> String {
+    fn get_padding(&mut self, n: usize) -> String {
         let mut padding = Vec::new();
         for _ in 0..n {
-            padding
-                .push(constants::PADDING[get_random_number(constants::PADDING.len())].to_string());
+            padding.push(
+                constants::PADDING[self.generator.random(constants::PADDING.len())].to_string(),
+            );
         }
         padding.join("")
     }
